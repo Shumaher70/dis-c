@@ -21,7 +21,7 @@ export const POST = async (req: Request) => {
         imageUrl,
         invitedCode: uuidv4(),
         channels: {
-          create: [{ name: "genera", profileId: profile.id }],
+          create: [{ name: "general", profileId: profile.id }],
         },
         members: {
           create: [
