@@ -1,3 +1,4 @@
+
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
@@ -45,5 +46,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
       />
     </div>
   );
+
 };
+
 export default ChannelIdPage;
