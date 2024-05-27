@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import ActionTooltip from "@/components/action-tooltip";
-import { useModal } from "@/hooks/use-modal-store";
+import { ModalType, useModal } from "@/hooks/use-modal-store";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -27,9 +27,18 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
 
   const Icon = IconMap[channel.type];
 
+  const onClick = () => {
+    router.push(`/servers/${params?.serverId}/channels/${channel.id}`);
+  };
+
+  const onAction = (e: React.MouseEvent, action: ModalType) => {
+    e.stopPropagation();
+    onOpen(action, { channel, server });
+  };
+
   return (
     <button
-      onClick={() => {}}
+      onClick={onClick}
       className={cn(
         "dark:hover:btg-zinc-700/50 group mb-1 flex w-full items-center gap-x-2 rounded-md px-2 py-2 transition hover:bg-zinc-700/10",
         params?.channelId === channel.id && "bg-zinc-700/20 dark:bg-zinc-700",
@@ -51,20 +60,20 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
         <div className="ml-auto flex items-center gap-x-2">
           <ActionTooltip label="Edit">
             <Edit
-              onClick={() => onOpen("editChannel", { server, channel })}
+              onClick={(e) => onAction(e, "editChannel")}
               className="hidden h-4 w-4 text-zinc-500 transition hover:text-zinc-600 group-hover:block dark:text-zinc-400 dark:hover:text-zinc-300"
             />
           </ActionTooltip>
 
           <ActionTooltip label="Delete">
-            <Trash className="hidden h-4 w-4 text-zinc-500 transition hover:text-zinc-600 group-hover:block dark:text-zinc-400 dark:hover:text-zinc-300" />
             <Trash
-              onClick={() => onOpen("deleteChannel", { server, channel })}
+              onClick={(e) => onAction(e, "deleteChannel")}
               className="hidden h-4 w-4 text-zinc-500 transition hover:text-zinc-600 group-hover:block dark:text-zinc-400 dark:hover:text-zinc-300"
             />
           </ActionTooltip>
         </div>
       )}
+
       {channel.name === "general" && (
         <Lock className="ml-auto h-4 w-4 text-zinc-500 dark:text-zinc-400" />
       )}
