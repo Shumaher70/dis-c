@@ -60,8 +60,8 @@ model Member {
    messages       Message[]
    directMessages DirectMessage[]
 
-   conversationsInitiated Converastion[] @relation("MemberOne")
-   conversationsReceived  Converastion[] @relation("MemberTwo")
+   conversationsInitiated Conversation[] @relation("MemberOne")
+   conversationsReceived  Conversation[] @relation("MemberTwo")
 
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
@@ -116,7 +116,7 @@ model Message {
    @@index([memberId])
 }
 
-model Converastion {
+model Conversation {
    id String @id @default(uuid())
 
    memberOneId String
@@ -139,7 +139,7 @@ model DirectMessage {
    member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
    conversationId String
-   conversation   Converastion @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
    deleted Boolean @default(false)
 
