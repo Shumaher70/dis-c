@@ -16,12 +16,15 @@ interface ChatInputProps {
   type: "conversation" | "channel";
 }
 import { Input } from "@/components/ui/input";
+import { useModal } from "@/hooks/use-modal-store";
 
 const formSchema = z.object({
   content: z.string().min(1),
 });
 
 const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
+  const { onOpen } = useModal();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,7 +59,7 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                 <div className="relative p-4 pb-6">
                   <button
                     type="button"
-                    onClick={() => {}}
+                    onClick={() => onOpen("messageFile", { apiUrl, query })}
                     className="absolute left-9 top-7 flex h-[24px] w-[24px] items-center justify-center rounded-full bg-zinc-500 transition hover:bg-zinc-600 dark:bg-zinc-400 dark:hover:bg-zinc-300"
                   >
                     <Plus className="tex-white dark:text-[#313338]" />
