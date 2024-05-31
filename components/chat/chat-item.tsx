@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ChatItemProps {
   id: string;
@@ -55,7 +56,7 @@ const ChatItem = ({
   socketQuery,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { onOpen } = useModal();
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
@@ -229,7 +230,15 @@ const ChatItem = ({
           )}
 
           <ActionTooltip label="Delete">
-            <Trash className="ml-auto h-4 w-4 cursor-pointer text-zinc-500 transition hover:text-zinc-600 dark:hover:text-zinc-300" />
+            <Trash
+              onClick={() =>
+                onOpen("deleteMessage", {
+                  apiUrl: `${socketUrl}/${id}`,
+                  query: socketQuery,
+                })
+              }
+              className="ml-auto h-4 w-4 cursor-pointer text-zinc-500 transition hover:text-zinc-600 dark:hover:text-zinc-300"
+            />
           </ActionTooltip>
         </div>
       )}
